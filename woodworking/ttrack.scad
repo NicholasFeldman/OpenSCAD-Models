@@ -1,7 +1,7 @@
 //////////////////////////////
 // File: ttrack.scad        //
 // Title: T-Track           //
-// Version: 1.0.0           //
+// Version: 1.0.1           //
 // Author: Nicholas Feldman //
 //////////////////////////////
 
@@ -22,6 +22,8 @@
 //
 // 1.0.0:
 //   - Initial Version, create basic t-track profile
+// 1.0.1:
+//   - Widen countersunk screw hole
 
 track_height = 9.525;
 track_width = 19.05;
@@ -64,7 +66,7 @@ module ttrack(t) {
         
         // Counterunk screw hole
         translate([track_length/2, track_width/2, 0])
-        cylinder(h=screw_hole_height, d1=screw_hole_width, d2=screw_hole_width*1.5);
+        cylinder(h=screw_hole_height, d1=screw_hole_width, d2=screw_hole_width*2);
         
    }
 }
