@@ -1,5 +1,5 @@
 //////////////////////////////
-// File: ttrack.scad        //
+// File: t-track.scad       //
 // Title: T-Track           //
 // Version: 1.1.0           //
 // Author: Nicholas Feldman //
