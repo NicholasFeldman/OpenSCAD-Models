@@ -1,7 +1,7 @@
 //////////////////////////////
 // File: ttrack.scad        //
 // Title: T-Track           //
-// Version: 1.0.1           //
+// Version: 1.1.0           //
 // Author: Nicholas Feldman //
 //////////////////////////////
 
@@ -10,8 +10,8 @@
 // T-Track for woodworking jigs and assembly tables.
 // Designed based on Rockler and Powertec tracks.
 // 
-// I recommend printing on it's side lengthwise,
-// with tree supports only touching the buildplate for accuracy and easy cleanup.
+// I recommend printing on end, using a raft.
+// This is the best alignment for most strength possible.
 //
 // Should be compatible with most T-Bolts,
 // But values might need to be tweaked based on how accurate your printer is,
@@ -24,6 +24,8 @@
 //   - Initial Version, create basic t-track profile
 // 1.0.1:
 //   - Widen countersunk screw hole
+// 1.1.0:
+//   - Only put holes in every other segment, if odd number of segments
 
 track_height = 9.525;
 track_width = 19.05;
@@ -44,10 +46,10 @@ slot_bottom_height = slot_depth - t_slot_height - t_slot_depth;
 screw_hole_width = 5;
 screw_hole_height = track_height - slot_depth;
 
-track_segments = 1;
+track_segments = 7;
 
-module ttrack(t) {
-    translate([track_length*(t-1), 0, 0])
+module ttrack(n, create_screw_hole = true) {
+    translate([track_length*(n-1), 0, 0])
     difference() {
         // Main Body of the track
         cube([track_length, track_width, track_height], 0);
@@ -65,12 +67,16 @@ module ttrack(t) {
         cube([track_length, slot_bottom_width, slot_bottom_height], 0);
         
         // Counterunk screw hole
-        translate([track_length/2, track_width/2, 0])
-        cylinder(h=screw_hole_height, d1=screw_hole_width, d2=screw_hole_width*2);
-        
+        if (create_screw_hole) {
+            translate([track_length/2, track_width/2, 0])
+            cylinder(h=screw_hole_height, d1=screw_hole_width, d2=screw_hole_width*2);
+        }
    }
 }
 
+// Straight t-track
 for (i = [1:track_segments]) {
-    ttrack(i);
+    // If number of segments is even, we put a screw hole in every one.
+    // Otherwise we put one in every other segment
+    ttrack(i, (track_segments % 2 == 0) || i % 2 != 0);
 }
